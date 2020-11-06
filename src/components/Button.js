@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const Container = styled.button`
@@ -16,8 +15,14 @@ const Container = styled.button`
     }
 `
 
-const Button = ({ children, onClick, disabled, marginTop=0 }) => (
-    <Container onClick={onClick} disabled={disabled} marginTop={marginTop}>
+const Button = ({
+    children,
+    onClick,
+    disabled,
+    type = 'button',
+    marginTop = 0,
+}) => (
+    <Container onClick={onClick} disabled={disabled} type={type} marginTop={marginTop}>
         {children}
     </Container>
 )

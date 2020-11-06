@@ -9,16 +9,18 @@ import Button from '../components/Button'
 const SignUp = () => {
     return (
         <Layout>
-            <TextInput
-                label={'Name'}
-            />
-            <TextInput
-                label={'Email'}
-                marginTop={15}
-            />
-            <Button marginTop={15}>
-                CREATE TEAM
-            </Button>
+            <form>
+                <TextInput
+                    label={'Name'}
+                />
+                <TextInput
+                    label={'Email'}
+                    marginTop={15}
+                />
+                <Button type={'submit'} marginTop={15}>
+                    CREATE TEAM
+                </Button>
+            </form>
         </Layout>
     )
 }
