@@ -15,13 +15,13 @@ const Input = styled.input`
     width: 100%;
 `
 
-const TextInput = ({ onChange, value, label, name, marginTop=0 }) => (
+const PasswordInput = ({ onChange, value, label, name, marginTop=0 }) => (
     <Container marginTop={marginTop}>
         { label && (
             <Label htmlFor={name || label}>{label}</Label>
         )}
-        <Input onChange={onChange} value={value} name={name || label} type={'text'} />
+        <Input onChange={onChange} value={value} name={name || label} type={'password'} />
     </Container>
 )
 
-export default TextInput
+export default PasswordInput
