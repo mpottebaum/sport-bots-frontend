@@ -1,6 +1,6 @@
 const paths = {
     Home: '/',
-    Login: '/login',
+    LogIn: '/login',
     SignUp: '/signup',
 }
 

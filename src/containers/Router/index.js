@@ -2,10 +2,12 @@ import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import routePaths from './routePaths'
 
-import LandingPage from '../LandingPage'
+import Landing from '../Landing'
+import SignUp from '../SignUp'
 
 const routes = [
-    { path: routePaths.Home, component: LandingPage, exact: true },
+    { path: routePaths.Home, component: Landing, exact: true },
+    { path: routePaths.SignUp, component: SignUp, exact: true },
 ]
 
 
