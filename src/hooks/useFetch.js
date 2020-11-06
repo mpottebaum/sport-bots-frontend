@@ -11,16 +11,19 @@ const getHeaders =  () => {
     }
 }
 
+const createBody = body => body ? { body: JSON.stringify(body) } : {}
+
 const useFetch = ( initialLoading = false ) => {
     const [ data, setData ] = useState(null)
     const [ loading, setLoading ] = useState(initialLoading)
     
     const fetchData = async request => {
         const headers = getHeaders()
+        const body = createBody(request.body)
         const config = {
             headers,
             method: request.method || 'GET',
-            body: JSON.stringify(request.body || {})
+            ...body,
         }
         const url = API_URL + request.url
 

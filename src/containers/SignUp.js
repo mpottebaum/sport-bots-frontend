@@ -4,6 +4,7 @@ import useFetch from '../hooks/useFetch'
 import { useHistory } from 'react-router-dom'
 import routePaths from './Router/routePaths'
 import { signUpAPI } from '../utils/apiRoutes'
+import { TeamContext } from '../contexts/TeamContext'
 
 import Layout from '../components/LandingLayout'
 import TextInput from '../components/TextInput'
@@ -13,6 +14,7 @@ import Button from '../components/Button'
 const SignUp = () => {
     const [ { name, email, password }, onChange ] = useAuthInputs()
     const { loading, fetchData } = useFetch()
+    const { setTeamFromResp } = TeamContext
 
     const onSubmit = async e => {
         e.preventDefault()
@@ -30,12 +32,10 @@ const SignUp = () => {
         })
 
         if(resp.token) {
-            localStorage.setItem('token', token)
+            setTeamFromResp(resp)
         }
     }
-
-    console.log('loading', loading)
-
+    
     return (
         <Layout>
             <form onSubmit={onSubmit}>
