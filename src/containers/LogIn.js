@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import useAuthInputs from '../hooks/useAuthInputs'
 import useFetch from '../hooks/useFetch'
 import { useHistory } from 'react-router-dom'
@@ -14,7 +14,14 @@ import Button from '../components/Button'
 const LogIn = () => {
     const [ { email, password }, onChange ] = useAuthInputs()
     const { loading, fetchData } = useFetch()
-    const { setTeamFromResp } = useContext(TeamContext)
+    const { team, setTeamFromResp } = useContext(TeamContext)
+    const history = useHistory()
+
+    useEffect(() => {
+        if(team) {
+            history.push(routePaths.Roster)
+        }
+    }, [team])
 
     const onSubmit = async e => {
         e.preventDefault()
@@ -32,6 +39,7 @@ const LogIn = () => {
 
         if(resp.token) {
             setTeamFromResp(resp)
+            history.push(routePaths.Roster)
         }
     }
     

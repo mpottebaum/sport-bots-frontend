@@ -13,9 +13,9 @@ const getHeaders =  () => {
 
 const createBody = body => body ? { body: JSON.stringify(body) } : {}
 
-const useFetch = ( initialLoading = false ) => {
+const useFetch = ( controlLoading = false ) => {
     const [ data, setData ] = useState(null)
-    const [ loading, setLoading ] = useState(initialLoading)
+    const [ loading, setLoading ] = useState(controlLoading)
     
     const fetchData = async request => {
         const headers = getHeaders()
@@ -26,19 +26,21 @@ const useFetch = ( initialLoading = false ) => {
             ...body,
         }
         const url = API_URL + request.url
-
-        setLoading(true)
+        if(!controlLoading) setLoading(true)
         const resp = await fetch(url, config)
         const parsedResp = await resp.json()
         setData(parsedResp)
-        setLoading(false)
+        if(!controlLoading) setLoading(false)
         return parsedResp
     }
+
+    const addSetLoading = controlLoading ? { setLoading } : {}
 
     return {
         data,
         loading,
         fetchData,
+        ...addSetLoading,
     }
 }
 
