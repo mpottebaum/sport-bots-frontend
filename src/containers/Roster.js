@@ -19,7 +19,9 @@ const Roster = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        getRoster()
+        if(!roster) {
+            getRoster()
+        }
     }, [])
 
     const getRoster = async () => {
@@ -39,7 +41,7 @@ const Roster = () => {
     return (
         <div>
             <Button onClick={generateRoster}>CREATE RANDOM ROSTER</Button>
-            <Button secondary>VIEW ALL PLAYER BOTS</Button>
+            <Button onClick={() => history.push(routePaths.Bots)} secondary>VIEW ALL PLAYER BOTS</Button>
             {roster && (roster.starters && roster.alternates) && (
                 <>
                     <h1>Starters</h1>
