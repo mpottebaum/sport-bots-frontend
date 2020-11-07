@@ -60,7 +60,7 @@ const LogIn = () => {
                     value={password}
                     marginTop={15}
                 />
-                <Button type={'submit'} marginTop={15}>
+                <Button type={'submit'} marginTop={15} loading={loading}>
                     LOG IN
                 </Button>
             </form>

@@ -67,7 +67,7 @@ const SignUp = () => {
                     value={password}
                     marginTop={15}
                 />
-                <Button type={'submit'} marginTop={15}>
+                <Button type={'submit'} marginTop={15} loading={loading}>
                     CREATE TEAM
                 </Button>
             </form>

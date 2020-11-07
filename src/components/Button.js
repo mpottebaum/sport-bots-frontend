@@ -22,9 +22,17 @@ const Button = ({
     type = 'button',
     marginTop = 0,
     secondary = false,
+    loading = false,
 }) => (
-    <Container onClick={onClick} disabled={disabled} type={type} marginTop={marginTop} secondary={secondary}>
-        {children}
+    <Container
+        onClick={onClick}
+        disabled={disabled || loading}
+        type={type}
+        marginTop={marginTop}
+        secondary={secondary}
+        loading={loading}
+    >
+        {loading ? 'Loading' : children}
     </Container>
 )
 
