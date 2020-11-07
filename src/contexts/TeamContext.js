@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import useFetch from '../hooks/useFetch'
-import { authApi } from '../utils/apiRoutes'
+import { authAPI } from '../utils/apiRoutes'
 
 export const TeamContext = createContext();
 
@@ -16,7 +16,7 @@ const TeamContextProvider = ({ children }) => {
   const getTeam = async () => {
     if (token === null) return;
     const resp = await fetchData({
-        url: authApi,
+        url: authAPI,
     })
     if(resp.team) {
         setTeam(resp.team)

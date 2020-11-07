@@ -4,10 +4,12 @@ import routePaths from './routePaths'
 
 import Landing from '../Landing'
 import SignUp from '../SignUp'
+import LogIn from '../LogIn'
 
 const routes = [
     { path: routePaths.Home, component: Landing, exact: true },
     { path: routePaths.SignUp, component: SignUp, exact: true },
+    { path: routePaths.LogIn, component: LogIn, exact: true },
 ]
 
 

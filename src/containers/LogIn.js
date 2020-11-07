@@ -3,7 +3,7 @@ import useAuthInputs from '../hooks/useAuthInputs'
 import useFetch from '../hooks/useFetch'
 import { useHistory } from 'react-router-dom'
 import routePaths from './Router/routePaths'
-import { signUpAPI } from '../utils/apiRoutes'
+import { authAPI } from '../utils/apiRoutes'
 import { TeamContext } from '../contexts/TeamContext'
 
 import Layout from '../components/LandingLayout'
@@ -11,8 +11,8 @@ import TextInput from '../components/TextInput'
 import PasswordInput from '../components/PasswordInput'
 import Button from '../components/Button'
 
-const SignUp = () => {
-    const [ { name, email, password }, onChange ] = useAuthInputs()
+const LogIn = () => {
+    const [ { email, password }, onChange ] = useAuthInputs()
     const { loading, fetchData } = useFetch()
     const { setTeamFromResp } = useContext(TeamContext)
 
@@ -20,13 +20,12 @@ const SignUp = () => {
         e.preventDefault()
         const body = {
             team: {
-                name,
                 email,
                 password,
             }
         }
         const resp = await fetchData({
-            url: signUpAPI,
+            url: authAPI,
             method: 'POST',
             body,
         })
@@ -35,16 +34,10 @@ const SignUp = () => {
             setTeamFromResp(resp)
         }
     }
-
+    
     return (
         <Layout>
             <form onSubmit={onSubmit}>
-                <TextInput
-                    label={'Name'}
-                    name={'name'}
-                    onChange={onChange}
-                    value={name}
-                />
                 <TextInput
                     label={'Email'}
                     name={'email'}
@@ -60,11 +53,11 @@ const SignUp = () => {
                     marginTop={15}
                 />
                 <Button type={'submit'} marginTop={15}>
-                    CREATE TEAM
+                    LOG IN
                 </Button>
             </form>
         </Layout>
     )
 }
 
-export default SignUp
+export default LogIn

@@ -1,3 +1,3 @@
 export const signUpAPI = '/teams'
 
-export const authApi = '/auth'
+export const authAPI = '/auth'
