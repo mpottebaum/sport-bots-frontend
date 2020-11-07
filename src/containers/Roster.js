@@ -3,52 +3,55 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 import useFetch from '../hooks/useFetch'
-import { rosterAPI, botAPI } from '../utils/apiRoutes'
+import { rosterAPI, randomRosterAPI } from '../utils/apiRoutes'
 import { TeamContext } from '../contexts/TeamContext'
 import routePaths from './Router/routePaths'
 import { addRoster } from '../store/roster/actions'
-import { addBots } from '../store/bots/actions'
+// import { addBots } from '../store/bots/actions'
+
+import Button from '../components/Button'
 
 const Roster = () => {
     const { team } = useContext(TeamContext)
-    const { loading, setLoading, fetchData } = useFetch(true)
+    const { loading, fetchData } = useFetch()
     const history = useHistory()
     const roster = useSelector(state => state.roster)
-    const bots = useSelector(state => state.bots)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        getData()
+        getRoster()
     }, [])
-
-    const getData = async () => {
-        setLoading(true)
-        if(!bots) {
-            await getBots()
-        }
-        if(!roster) {
-            await getRoster()
-        }
-        setLoading(false)
-    }
 
     const getRoster = async () => {
         const resp = await fetchData({
             url: rosterAPI(team.id),
         })
-        dispatch(addRoster(resp.roster))
+        if(resp.roster) dispatch(addRoster(resp.roster))
     }
 
-    const getBots = async () => {
+    const generateRoster = async () => {
         const resp = await fetchData({
-            url: botAPI(team.id),
+            url: randomRosterAPI(team.id),
         })
-        dispatch(addBots(resp.bots))
+        if(resp.roster) dispatch(addRoster(resp.roster))
     }
 
     return (
         <div>
-            <p>Roster</p>
+            <Button onClick={generateRoster}>CREATE RANDOM ROSTER</Button>
+            <Button secondary>VIEW ALL PLAYER BOTS</Button>
+            {roster && (roster.starters && roster.alternates) && (
+                <>
+                    <h1>Starters</h1>
+                    <ul>
+                        {roster.starters.map(player => <li>{player.name}</li>)}
+                    </ul>
+                    <h1>Alternates</h1>
+                    <ul>
+                        {roster.alternates.map(player => <li>{player.name}</li>)}
+                    </ul>
+                </>
+            )}
         </div>
     )
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.button`
-    background-color: blue;
+    background-color: ${({ secondary }) => secondary ? 'gray' : 'blue'};
     border: none;
     padding: 10px;
     margin-top: ${({ marginTop }) => marginTop}px;
@@ -21,8 +21,9 @@ const Button = ({
     disabled,
     type = 'button',
     marginTop = 0,
+    secondary = false,
 }) => (
-    <Container onClick={onClick} disabled={disabled} type={type} marginTop={marginTop}>
+    <Container onClick={onClick} disabled={disabled} type={type} marginTop={marginTop} secondary={secondary}>
         {children}
     </Container>
 )
