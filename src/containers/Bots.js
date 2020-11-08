@@ -9,6 +9,7 @@ import routePaths from './Router/routePaths'
 import { addBots } from '../store/bots/actions'
 
 import Button from '../components/Button'
+import Layout from '../components/Layout'
 
 const Bots = () => {
     const { team } = useContext(TeamContext)
@@ -31,14 +32,16 @@ const Bots = () => {
     }
 
     return (
-        <div>
-            <Button onClick={() => history.push(routePaths.Roster)} secondary>VIEW ROSTER</Button>
+        <Layout>
+            <div>
+                <Button onClick={() => history.push(routePaths.Roster)} secondary>VIEW ROSTER</Button>
+            </div>
             {bots && (
                 <ul>
-                    {bots.map(bot => <li>{bot.name}</li>)}
+                    {bots.map(bot => <li key={bot.id}>{bot.name}</li>)}
                 </ul>
             )}
-        </div>
+        </Layout>
     )
 }
 

@@ -11,6 +11,7 @@ import { addRoster, clearRoster, swapRosterDesignations } from '../../store/rost
 
 import Button from '../../components/Button'
 import PlayersList from './components/PlayersList'
+import Layout from '../../components/Layout'
 
 const Roster = () => {
     const { team, toggleRosterSave } = useContext(TeamContext)
@@ -98,15 +99,17 @@ const Roster = () => {
     const rosterIsGenerated = () => roster.starters && roster.alternates
 
     return (
-        <div>
-            <Button onClick={generateRoster}>CREATE RANDOM ROSTER</Button>
-            <Button onClick={() => history.push(routePaths.Bots)} secondary>VIEW ALL PLAYER BOTS</Button>
-            {(roster && rosterIsGenerated()) && (
-                <Button onClick={saveRoster} disabled={team.saved_roster && !changesMade}>SAVE ROSTER</Button>
-            )}
-            {team.saved_roster && (
-                <Button onClick={deleteRoster}>DELETE ROSTER</Button>
-            )}
+        <Layout>
+            <div>
+                <Button onClick={generateRoster}>CREATE RANDOM ROSTER</Button>
+                <Button onClick={() => history.push(routePaths.Bots)} secondary>VIEW ALL PLAYER BOTS</Button>
+                {(roster && rosterIsGenerated()) && (
+                    <Button onClick={saveRoster} disabled={team.saved_roster && !changesMade}>SAVE ROSTER</Button>
+                )}
+                {team.saved_roster && (
+                    <Button onClick={deleteRoster}>DELETE ROSTER</Button>
+                )}
+            </div>
             {(roster && rosterIsGenerated()) && (
                 <>
                     <h1>Starters</h1>
@@ -115,7 +118,7 @@ const Roster = () => {
                     <PlayersList players={roster.alternates} swapper={swapper} />
                 </>
             )}
-        </div>
+        </Layout>
     )
 }
 

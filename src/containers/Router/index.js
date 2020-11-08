@@ -1,7 +1,9 @@
 import React, { useContext } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import routePaths from './routePaths'
 import { TeamContext } from '../../contexts/TeamContext'
+
+import Header from '../../components/Header'
 
 import Landing from '../Landing'
 import SignUp from '../SignUp'
@@ -23,7 +25,10 @@ const Routes = () => {
 
     return (
         <Router>
-            {routes.map(r => <Route path={r.path} component={r.component} exact={r.exact} key={r.path} />)}
+            <Header />
+            <Switch>
+                {routes.map(r => <Route path={r.path} component={r.component} exact={r.exact} key={r.path} />)}
+            </Switch>
         </Router>
     )
 }
