@@ -6,14 +6,14 @@ import useFetch from '../../hooks/useFetch'
 import { rosterAPI, randomRosterAPI } from '../../utils/apiRoutes'
 import { TeamContext } from '../../contexts/TeamContext'
 import routePaths from '../Router/routePaths'
-import { addRoster, swapRosterDesignations } from '../../store/roster/actions'
+import { addRoster, clearRoster, swapRosterDesignations } from '../../store/roster/actions'
 // import { addBots } from '../../store/bots/actions'
 
 import Button from '../../components/Button'
 import PlayersList from './components/PlayersList'
 
 const Roster = () => {
-    const { team, updateRosterSave } = useContext(TeamContext)
+    const { team, toggleRosterSave } = useContext(TeamContext)
     const { loading, fetchData } = useFetch()
     const history = useHistory()
     const roster = useSelector(state => state.roster)
@@ -64,8 +64,19 @@ const Roster = () => {
             body
         })
         if(resp.roster) {
-            updateRosterSave()
+            toggleRosterSave()
             setChangesMade(false)
+        }
+    }
+
+    const deleteRoster = async () => {
+        const resp = await fetchData({
+            url: rosterAPI(team.id),
+            method: 'DELETE',
+        })
+        if(resp.message) {
+            dispatch(clearRoster())
+            toggleRosterSave()
         }
     }
 
@@ -90,10 +101,13 @@ const Roster = () => {
         <div>
             <Button onClick={generateRoster}>CREATE RANDOM ROSTER</Button>
             <Button onClick={() => history.push(routePaths.Bots)} secondary>VIEW ALL PLAYER BOTS</Button>
-            {roster && rosterIsGenerated() && (
+            {(roster && rosterIsGenerated()) && (
                 <Button onClick={saveRoster} disabled={team.saved_roster && !changesMade}>SAVE ROSTER</Button>
             )}
-            {roster && rosterIsGenerated() && (
+            {team.saved_roster && (
+                <Button onClick={deleteRoster}>DELETE ROSTER</Button>
+            )}
+            {(roster && rosterIsGenerated()) && (
                 <>
                     <h1>Starters</h1>
                     <PlayersList players={roster.starters} swapper={swapper} starter />
