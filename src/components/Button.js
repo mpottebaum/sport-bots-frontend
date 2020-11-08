@@ -30,7 +30,6 @@ const Button = ({
         type={type}
         marginTop={marginTop}
         secondary={secondary}
-        loading={loading}
     >
         {loading ? 'Loading' : children}
     </Container>

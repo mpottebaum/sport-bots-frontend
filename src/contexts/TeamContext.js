@@ -34,6 +34,11 @@ const TeamContextProvider = ({ children }) => {
     localStorage.removeItem('token')
   }
 
+  const updateRosterSave = () => setTeam({
+    ...team,
+    saved_roster: true
+  })
+
   if (loading) return null;
 
   return (
@@ -43,6 +48,7 @@ const TeamContextProvider = ({ children }) => {
         setTeam,
         setTeamFromResp,
         removeTeam,
+        updateRosterSave,
       }}
     >
       {children}
