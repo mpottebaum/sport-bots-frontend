@@ -5,6 +5,10 @@ import { useHistory } from 'react-router-dom'
 import routePaths from './Router/routePaths'
 import { teamAPI } from '../utils/apiRoutes'
 import { TeamContext } from '../contexts/TeamContext'
+import { useDispatch } from 'react-redux'
+import { openModal } from '../store/modal/actions'
+import modalTypes from './Modals/modalTypes'
+import { setErrors } from '../store/errors/actions'
 
 import Layout from '../components/LandingLayout'
 import TextInput from '../components/TextInput'
@@ -12,16 +16,25 @@ import PasswordInput from '../components/PasswordInput'
 import Button from '../components/Button'
 
 const SignUp = () => {
-    const [ { name, email, password }, onChange ] = useAuthInputs()
-    const { loading, fetchData } = useFetch()
+    const [ { name, email, password }, onChange, resetInputs ] = useAuthInputs()
+    const { loading, errors, fetchData } = useFetch()
     const { team, setTeamFromResp } = useContext(TeamContext)
     const history = useHistory()
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if(team) {
             history.push(routePaths.Roster)
         }
     }, [team])
+
+    useEffect(() => {
+        if(errors) {
+            dispatch(setErrors(errors))
+            dispatch(openModal(modalTypes.Errors))
+            resetInputs()
+        }
+    }, [errors])
 
     const onSubmit = async e => {
         e.preventDefault()

@@ -1,12 +1,13 @@
 import { useState } from 'react'
 
 const useAuthInputs = ( initialAuth = {}) => {
-    const [ auth, setAuth ] = useState({
+    const authObj = {
         name: '',
         email: '',
         password: '',
         ...initialAuth
-    })
+    }
+    const [ auth, setAuth ] = useState(authObj)
 
     const onChange = e => {
         const { value, name } = e.target
@@ -16,7 +17,9 @@ const useAuthInputs = ( initialAuth = {}) => {
         })
     }
 
-    return [ auth, onChange ]
+    const resetInputs = () => setAuth(authObj)
+
+    return [ auth, onChange, resetInputs ]
 }
 
 export default useAuthInputs

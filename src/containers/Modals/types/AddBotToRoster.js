@@ -5,13 +5,12 @@ import useFetch from '../../../hooks/useFetch'
 import { botsAPI } from '../../../utils/apiRoutes'
 import { TeamContext } from '../../../contexts/TeamContext'
 import { addStarter, addAlternate } from '../../../store/roster/actions'
-import { closeModal } from '../../../store/modal/actions'
 import { addBots } from '../../../store/bots/actions'
 
 import Modal from '../cmps/Modal'
 import Bot from '../cmps/Bot'
 
-const AddBotToRoster = () => {
+const AddBotToRoster = ({ onClose }) => {
     const { team, setRosterChangesMade } = useContext(TeamContext)
     const { loading, fetchData } = useFetch()
     const bots = useSelector(state => state.bots)
@@ -39,7 +38,7 @@ const AddBotToRoster = () => {
             removePlayer
         }))
         setRosterChangesMade(true)
-        dispatch(closeModal())
+        onClose()
     }
 
     const availableBots = () => {
@@ -58,8 +57,7 @@ const AddBotToRoster = () => {
     }
 
     return (
-        <Modal>
-            <h1>PLAYER BOTS</h1>
+        <Modal onClose={onClose} title={'PLAYER BOTS'}>
             <ul>
                 {bots && availableBots().map(bot => <Bot bot={bot} addPlayer={addPlayer} />)}
             </ul>

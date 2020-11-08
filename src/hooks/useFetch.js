@@ -16,8 +16,10 @@ const createBody = body => body ? { body: JSON.stringify(body) } : {}
 const useFetch = ( controlLoading = false ) => {
     const [ data, setData ] = useState(null)
     const [ loading, setLoading ] = useState(controlLoading)
+    const [ errors, setErrors ] = useState(null)
     
     const fetchData = async request => {
+        setErrors(null)
         const headers = getHeaders()
         const body = createBody(request.body)
         const config = {
@@ -30,6 +32,7 @@ const useFetch = ( controlLoading = false ) => {
         const resp = await fetch(url, config)
         const parsedResp = await resp.json()
         setData(parsedResp)
+        if(parsedResp.error) setErrors(parsedResp.error.messages)
         if(!controlLoading) setLoading(false)
         return parsedResp
     }
@@ -39,6 +42,7 @@ const useFetch = ( controlLoading = false ) => {
     return {
         data,
         loading,
+        errors,
         fetchData,
         ...addSetLoading,
     }

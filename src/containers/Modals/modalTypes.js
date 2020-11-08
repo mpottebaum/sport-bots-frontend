@@ -1,5 +1,6 @@
 const modalTypes = {
-    addBotToRoster: 'addBotToRoster'
+    addBotToRoster: 'addBotToRoster',
+    Errors: 'Errors',
 }
 
 export default modalTypes
