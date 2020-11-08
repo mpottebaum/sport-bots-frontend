@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
@@ -6,10 +6,11 @@ import useFetch from '../../hooks/useFetch'
 import { rosterAPI, randomRosterAPI } from '../../utils/apiRoutes'
 import { TeamContext } from '../../contexts/TeamContext'
 import routePaths from '../Router/routePaths'
-import { addRoster } from '../../store/roster/actions'
+import { addRoster, swapRosterDesignations } from '../../store/roster/actions'
 // import { addBots } from '../../store/bots/actions'
 
 import Button from '../../components/Button'
+import PlayersList from './components/PlayersList'
 
 const Roster = () => {
     const { team, updateRosterSave } = useContext(TeamContext)
@@ -17,6 +18,8 @@ const Roster = () => {
     const history = useHistory()
     const roster = useSelector(state => state.roster)
     const dispatch = useDispatch()
+
+    const [ changesMade, setChangesMade ] = useState(false)
 
     useEffect(() => {
         if(!roster) {
@@ -60,9 +63,26 @@ const Roster = () => {
             method: team.saved_roster ? 'PUT' : 'POST',
             body
         })
-        console.log(resp)
-        if(resp.roster) updateRosterSave()
+        if(resp.roster) {
+            updateRosterSave()
+            setChangesMade(false)
+        }
     }
+
+    const playerToSwapHook = useState(null)
+
+    const swapPlayers = secondPlayer => {
+        const [ playerToSwap, setPlayerToSwap ] = swapper
+
+        dispatch(swapRosterDesignations({
+            ...playerToSwap,
+            ...secondPlayer
+        }))
+        setPlayerToSwap(null)
+        setChangesMade(true)
+    }
+
+    const swapper = [ ...playerToSwapHook, swapPlayers ]
 
     const rosterIsGenerated = () => roster.starters && roster.alternates
 
@@ -71,18 +91,14 @@ const Roster = () => {
             <Button onClick={generateRoster}>CREATE RANDOM ROSTER</Button>
             <Button onClick={() => history.push(routePaths.Bots)} secondary>VIEW ALL PLAYER BOTS</Button>
             {roster && rosterIsGenerated() && (
-                <Button onClick={saveRoster}>SAVE ROSTER</Button>
+                <Button onClick={saveRoster} disabled={team.saved_roster && !changesMade}>SAVE ROSTER</Button>
             )}
             {roster && rosterIsGenerated() && (
                 <>
                     <h1>Starters</h1>
-                    <ul>
-                        {roster.starters.map(player => <li key={player.id}>{player.name}</li>)}
-                    </ul>
+                    <PlayersList players={roster.starters} swapper={swapper} starter />
                     <h1>Alternates</h1>
-                    <ul>
-                        {roster.alternates.map(player => <li key={player.id}>{player.name}</li>)}
-                    </ul>
+                    <PlayersList players={roster.alternates} swapper={swapper} />
                 </>
             )}
         </div>

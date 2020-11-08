@@ -6,7 +6,7 @@ export const addRoster = roster => ({
 })
 
 export const swapRosterDesignations = ({ starter, alternate }) => ({
-    type: SWAP_PLAYERS,
+    type: SWAP_ROSTER_DESIGNATIONS,
     starter,
     alternate,
 })
