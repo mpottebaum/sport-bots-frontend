@@ -39,6 +39,11 @@ const TeamContextProvider = ({ children }) => {
     saved_roster: !team.saved_roster
   })
 
+  const setRosterChangesMade = rosterChangesMade => setTeam({
+    ...team,
+    rosterChangesMade,
+  })
+
   if (loading) return null;
 
   return (
@@ -49,6 +54,7 @@ const TeamContextProvider = ({ children }) => {
         setTeamFromResp,
         removeTeam,
         toggleRosterSave,
+        setRosterChangesMade,
       }}
     >
       {children}

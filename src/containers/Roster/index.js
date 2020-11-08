@@ -1,26 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
 
 import useFetch from '../../hooks/useFetch'
 import { rosterAPI, randomRosterAPI } from '../../utils/apiRoutes'
 import { TeamContext } from '../../contexts/TeamContext'
-import routePaths from '../Router/routePaths'
+// import routePaths from '../Router/routePaths'
 import { addRoster, clearRoster, swapRosterDesignations } from '../../store/roster/actions'
-// import { addBots } from '../../store/bots/actions'
 
 import Button from '../../components/Button'
-import PlayersList from './components/PlayersList'
+import PlayersList from './cmps/PlayersList'
 import Layout from '../../components/Layout'
 
 const Roster = () => {
-    const { team, toggleRosterSave } = useContext(TeamContext)
+    const { team, toggleRosterSave, setRosterChangesMade } = useContext(TeamContext)
     const { loading, fetchData } = useFetch()
-    const history = useHistory()
+    // const history = useHistory()
     const roster = useSelector(state => state.roster)
     const dispatch = useDispatch()
-
-    const [ changesMade, setChangesMade ] = useState(false)
 
     useEffect(() => {
         if(!roster) {
@@ -36,6 +33,7 @@ const Roster = () => {
     }
 
     const generateRoster = async () => {
+        if(team.saved_roster) setRosterChangesMade(true)
         const resp = await fetchData({
             url: randomRosterAPI(team.id),
         })
@@ -65,8 +63,8 @@ const Roster = () => {
             body
         })
         if(resp.roster) {
-            toggleRosterSave()
-            setChangesMade(false)
+            if(!team.saved_roster) toggleRosterSave()
+            setRosterChangesMade(false)
         }
     }
 
@@ -91,7 +89,7 @@ const Roster = () => {
             ...secondPlayer
         }))
         setPlayerToSwap(null)
-        setChangesMade(true)
+        setRosterChangesMade(true)
     }
 
     const swapper = [ ...playerToSwapHook, swapPlayers ]
@@ -101,13 +99,14 @@ const Roster = () => {
     return (
         <Layout>
             <div>
-                <Button onClick={generateRoster}>CREATE RANDOM ROSTER</Button>
-                <Button onClick={() => history.push(routePaths.Bots)} secondary>VIEW ALL PLAYER BOTS</Button>
+                <Button onClick={generateRoster} loading={loading}>CREATE RANDOM ROSTER</Button>
                 {(roster && rosterIsGenerated()) && (
-                    <Button onClick={saveRoster} disabled={team.saved_roster && !changesMade}>SAVE ROSTER</Button>
+                    <Button onClick={saveRoster} disabled={team.saved_roster && !team.rosterChangesMade} loading={loading}>
+                        {team.saved_roster ? 'SAVE ROSTER CHANGES' : 'SAVE ROSTER'}
+                    </Button>
                 )}
                 {team.saved_roster && (
-                    <Button onClick={deleteRoster}>DELETE ROSTER</Button>
+                    <Button onClick={deleteRoster} loading={loading}>DELETE ROSTER</Button>
                 )}
             </div>
             {(roster && rosterIsGenerated()) && (
