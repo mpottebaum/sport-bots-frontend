@@ -11,10 +11,12 @@ import { addRoster, clearRoster, swapRosterDesignations } from '../../store/rost
 import Button from '../../components/Button'
 import PlayersList from './cmps/PlayersList'
 import Layout from '../../components/Layout'
+import WithLoader from '../../components/WithLoader'
 
 const Roster = () => {
     const { team, toggleRosterSave, setRosterChangesMade } = useContext(TeamContext)
     const { loading, fetchData } = useFetch()
+    const { loading: rosterLoading, fetchData: fetchRoster } = useFetch()
     // const history = useHistory()
     const roster = useSelector(state => state.roster)
     const dispatch = useDispatch()
@@ -26,7 +28,7 @@ const Roster = () => {
     }, [])
 
     const getRoster = async () => {
-        const resp = await fetchData({
+        const resp = await fetchRoster({
             url: rosterAPI(team.id),
         })
         if(resp.roster) dispatch(addRoster(resp.roster))
@@ -34,7 +36,7 @@ const Roster = () => {
 
     const generateRoster = async () => {
         if(team.saved_roster) setRosterChangesMade(true)
-        const resp = await fetchData({
+        const resp = await fetchRoster({
             url: randomRosterAPI(team.id),
         })
         if(resp.roster) dispatch(addRoster(resp.roster))
@@ -110,12 +112,12 @@ const Roster = () => {
                 )}
             </div>
             {(roster && rosterIsGenerated()) && (
-                <>
+                <WithLoader loading={rosterLoading}>
                     <h1>Starters</h1>
                     <PlayersList players={roster.starters} swapper={swapper} starter />
                     <h1>Alternates</h1>
                     <PlayersList players={roster.alternates} swapper={swapper} />
-                </>
+                </WithLoader>
             )}
         </Layout>
     )

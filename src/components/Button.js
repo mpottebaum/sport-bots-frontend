@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import Spinner from 'react-bootstrap/Spinner'
+
 const Container = styled.button`
     background-color: ${({ secondary }) => secondary ? 'gray' : 'blue'};
     border: none;
@@ -31,7 +33,11 @@ const Button = ({
         marginTop={marginTop}
         secondary={secondary}
     >
-        {loading ? 'Loading' : children}
+        {loading ? (
+            <Spinner size="sm" animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+            </Spinner>
+        ) : children}
     </Container>
 )
 

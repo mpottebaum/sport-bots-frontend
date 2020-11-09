@@ -2,6 +2,8 @@ import React, { createContext, useEffect, useState } from 'react';
 import useFetch from '../hooks/useFetch'
 import { authAPI } from '../utils/apiRoutes'
 
+import LoadingPage from '../components/LoadingPage'
+
 export const TeamContext = createContext();
 
 const TeamContextProvider = ({ children }) => {
@@ -47,7 +49,7 @@ const TeamContextProvider = ({ children }) => {
     rosterChangesMade,
   })
 
-  if (loading) return null;
+  if (loading) return <LoadingPage />
 
   return (
     <TeamContext.Provider

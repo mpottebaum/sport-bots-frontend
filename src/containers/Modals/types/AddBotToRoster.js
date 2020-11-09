@@ -10,6 +10,7 @@ import { addBots } from '../../../store/bots/actions'
 import Modal from '../cmps/Modal'
 import Table from 'react-bootstrap/Table'
 import Bot from '../cmps/Bot'
+import WithLoader from '../../../components/WithLoader'
 
 const AddBotToRoster = ({ onClose }) => {
     const { team, setRosterChangesMade } = useContext(TeamContext)
@@ -59,19 +60,21 @@ const AddBotToRoster = ({ onClose }) => {
 
     return (
         <Modal onClose={onClose} title={'PLAYER BOTS'}>
-            <Table responsive='sm' hover>
-                <thead>
-                    <th>Name</th>
-                    <th>#</th>
-                    <th>Speed</th>
-                    <th>Strength</th>
-                    <th>Agility</th>
-                    <th>Attribute Sum</th>
-                </thead>
-                <tbody>
-                    {bots && availableBots().map(bot => <Bot bot={bot} addPlayer={addPlayer} />)}
-                </tbody>
-            </Table>
+            <WithLoader loading={loading}>
+                <Table responsive='sm' hover>
+                    <thead>
+                        <th>Name</th>
+                        <th>#</th>
+                        <th>Speed</th>
+                        <th>Strength</th>
+                        <th>Agility</th>
+                        <th>Attribute Sum</th>
+                    </thead>
+                    <tbody>
+                            {bots && availableBots().map(bot => <Bot bot={bot} addPlayer={addPlayer} />)}
+                    </tbody>
+                </Table>
+            </WithLoader>
         </Modal>
     )
 }

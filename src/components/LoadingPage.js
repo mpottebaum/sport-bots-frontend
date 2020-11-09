@@ -6,18 +6,10 @@ import robotLogo from '../assets/robot-logo.png'
 import { medium } from '../constants/mediaQueries'
 
 const Container = styled.div`
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding-top: 10px;
-    
-    @media (min-width: ${medium}) {
-        flex-direction: row;
-        justify-content: center;
-        padding-top: 30px;
-    }
 `
 
 const Image = styled.img`
@@ -31,21 +23,13 @@ const Image = styled.img`
     }
 `
 
-const Content = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 15px;
-`
 
-const Layout = ({ children,  }) => (
+
+const LoadingPage = () => (
     <Container>
         <Image src={robotLogo} />
-        <Content>
-            {children}
-        </Content>
+        <p>Loading...</p>
     </Container>
 )
 
-export default Layout
+export default LoadingPage
