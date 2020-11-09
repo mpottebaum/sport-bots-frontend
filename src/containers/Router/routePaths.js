@@ -3,6 +3,7 @@ const paths = {
     LogIn: '/login',
     SignUp: '/signup',
     Roster: '/',
+    TeamSettings: '/settings',
 }
 
 export default paths

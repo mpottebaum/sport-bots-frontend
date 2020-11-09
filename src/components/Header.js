@@ -42,6 +42,11 @@ const Header = () => {
                         CREATE TEAM
                     </NavItem>
                 )}
+                {team && (
+                    <NavItem onClick={() => history.push(routePaths.TeamSettings)}>
+                        SETTINGS
+                    </NavItem>
+                )}
                 <NavItem onClick={team ? logOut : logIn}>{ team ? 'LOG OUT' : 'LOG IN'}</NavItem>
             </Flex>
         </Container>

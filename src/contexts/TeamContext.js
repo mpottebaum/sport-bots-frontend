@@ -6,11 +6,13 @@ export const TeamContext = createContext();
 
 const TeamContextProvider = ({ children }) => {
   const [team, setTeam] = useState(null);
-  const { fetchData, loading } = useFetch()
+  const { fetchData, loading, setLoading } = useFetch(true)
   const token = localStorage.getItem('token');
 
   useEffect(() => {
+    setLoading(true)
     getTeam();
+    setLoading(false)
   }, []);
 
   const getTeam = async () => {
@@ -24,9 +26,10 @@ const TeamContextProvider = ({ children }) => {
   };
 
   const setTeamFromResp = resp => {
-    const { token, team } = resp
-    setTeam(team)
-    localStorage.setItem('token', token)
+    setTeam(resp.team)
+    if(resp.token) {
+      localStorage.setItem('token', resp.token)
+    }
   }
 
   const removeTeam = () => {

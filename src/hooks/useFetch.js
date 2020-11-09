@@ -29,10 +29,16 @@ const useFetch = ( controlLoading = false ) => {
         }
         const url = API_URL + request.url
         if(!controlLoading) setLoading(true)
-        const resp = await fetch(url, config)
-        const parsedResp = await resp.json()
-        setData(parsedResp)
-        if(parsedResp.error) setErrors(parsedResp.error.messages)
+        let parsedResp
+        try {
+            const resp =  await fetch(url, config)
+            parsedResp = await resp.json()
+            if(parsedResp.error) setErrors(parsedResp.error.messages)
+            else setData(parsedResp)
+        } catch(err) {
+            setErrors(['Something went wrong.'])
+            parsedResp = {}
+        }
         if(!controlLoading) setLoading(false)
         return parsedResp
     }

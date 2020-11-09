@@ -17,7 +17,7 @@ const useAuthInputs = ( initialAuth = {}) => {
         })
     }
 
-    const resetInputs = () => setAuth(authObj)
+    const resetInputs = inputs => setAuth(inputs || authObj)
 
     return [ auth, onChange, resetInputs ]
 }
