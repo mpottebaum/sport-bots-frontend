@@ -7,10 +7,10 @@ const Container = styled.div`
     width: 100vw;
     z-index: 99;
     background-color: rgba(0,0,0,0.5);
+    padding: 0 30px;
 `
 
 const ModalContainer = styled.div`
-    max-width: 500px;
     max-height: 500px;
     margin: auto;
     margin-top: 60px;

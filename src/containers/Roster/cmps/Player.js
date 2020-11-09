@@ -9,6 +9,8 @@ import Button from '../../../components/Button'
 
 const Player = ({ player, swapper, starter=false }) => {
 
+    const { name, speed, strength, agility } = player
+    const attributesSum = speed + strength + agility
     const [ playerToSwap, setPlayerToSwap, swapPlayers ] = swapper
     const dispatch = useDispatch()
 
@@ -39,19 +41,25 @@ const Player = ({ player, swapper, starter=false }) => {
     }
 
     return (
-        <li>
-            <p>{player.name}</p>
-            {!hideSwapButton() &&(
-                <Button onClick={onSwapClick} >
-                    {swapButtonText()}
-                </Button>
-            )}
-            {!playerToSwap && (
-                <Button onClick={onRemoveClick}>
-                    REMOVE
-                </Button>
-            )}
-        </li>
+        <tr>
+            <td>{name}</td>
+            <td>
+                {!hideSwapButton() &&(
+                    <Button onClick={onSwapClick} >
+                        {swapButtonText()}
+                    </Button>
+                )}
+                {!playerToSwap && (
+                    <Button onClick={onRemoveClick}>
+                        REMOVE
+                    </Button>
+                )}
+            </td>
+            <td>{speed}</td>
+            <td>{strength}</td>
+            <td>{agility}</td>
+            <td>{attributesSum}</td>
+        </tr>
     )
 }
 
