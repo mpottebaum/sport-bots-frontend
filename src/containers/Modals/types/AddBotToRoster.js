@@ -7,6 +7,9 @@ import { TeamContext } from '../../../contexts/TeamContext'
 import { addStarter, addAlternate } from '../../../store/roster/actions'
 import { clearRemovePlayer } from '../../../store/removePlayer/actions'
 import { addBots } from '../../../store/bots/actions'
+import { setErrors } from '../../../store/errors/actions'
+import { openModal } from '../../../store/modal/actions'
+import modalTypes from '../modalTypes'
 
 import Modal from '../cmps/Modal'
 import Table from 'react-bootstrap/Table'
@@ -26,6 +29,7 @@ const AddBotToRoster = ({ onClose }) => {
         if(team && !bots) {
             getBots()
         }
+        return () => dispatch(clearRemovePlayer())
     }, [])
 
     const getBots = async () => {
@@ -36,6 +40,18 @@ const AddBotToRoster = ({ onClose }) => {
     }
 
     const addPlayer = addPlayer => {
+        const { speed, agility, strength } = addPlayer
+        const attributeSum = speed + agility + strength
+        const allPlayersOnRoster = [ ...roster.starters, ...roster.alternates ]
+        const remainingRoster = allPlayersOnRoster.filter(player => player.id !== removePlayer.id)
+        const isAddPlayerValid = remainingRoster.every(player => (
+            player.speed + player.agility + player.strength !== attributeSum
+        ))
+        if(!isAddPlayerValid) {
+            dispatch(setErrors(['No two players on your roster can have the same attribute sum']))
+            dispatch(openModal(modalTypes.Errors))
+            return
+        }
         const addPlayerToRoster = removePlayer.starter ? addStarter : addAlternate
         dispatch(addPlayerToRoster({
             addPlayer,
@@ -60,15 +76,10 @@ const AddBotToRoster = ({ onClose }) => {
         return bots.filter(bot => !rosterLib[bot.id])
     }
 
-    const cancelAddBot = () => {
-        dispatch(clearRemovePlayer())
-        onClose()
-    }
-
     return (
         <Modal onClose={onClose} title={'PLAYER BOTS'}>
             <WithLoader loading={loading}>
-                <Button onClick={cancelAddBot} secondary>CANCEL</Button>
+                <Button onClick={onClose} secondary>CANCEL</Button>
                 <Table responsive='sm' hover>
                     <thead>
                         <tr>
