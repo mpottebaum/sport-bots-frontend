@@ -2,9 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { medium } from '../constants/mediaQueries'
+import { colors } from '../constants/theme'
 
 const Container = styled.div`
-
+    background-color: ${colors.background};
     position: relative;
     display: flex;
     flex-direction: column;

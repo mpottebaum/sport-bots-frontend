@@ -30,7 +30,7 @@ const Player = ({ player, swapper, starter=false }) => {
         (starter && playerToSwap.starter) || (!starter && playerToSwap.alternate)
     )
 
-    const swapButtonText = () => playerToSwap ? 'SWITCH' : `CHANGE TO ${starter ? 'ALTERNATE' : 'STARTER'}`
+    const swapButtonText = () => playerToSwap ? 'SWITCH' : `SET AS ${starter ? 'ALTERNATE' : 'STARTER'}`
 
     const onRemoveClick = () => {
         dispatch(setRemovePlayer({
@@ -45,13 +45,13 @@ const Player = ({ player, swapper, starter=false }) => {
             <td>{name}</td>
             <td>
                 {!hideSwapButton() &&(
-                    <Button onClick={onSwapClick} >
+                    <Button onClick={onSwapClick} marginBottom={10}>
                         {swapButtonText()}
                     </Button>
                 )}
                 {!playerToSwap && (
-                    <Button onClick={onRemoveClick}>
-                        REMOVE
+                    <Button onClick={onRemoveClick} secondary>
+                        REPLACE
                     </Button>
                 )}
             </td>

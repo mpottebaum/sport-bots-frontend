@@ -4,9 +4,11 @@ import { useHistory } from 'react-router-dom'
 import { TeamContext } from '../contexts/TeamContext'
 import routePaths from '../containers/Router/routePaths'
 
+import { colors } from '../constants/theme'
+
 const Container = styled.div`
     width: 100%;
-    background-color: black;
+    background-color: ${colors.darkBlue};
 `
     
 const Flex = styled.div`

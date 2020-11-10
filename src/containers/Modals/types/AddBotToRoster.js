@@ -63,12 +63,14 @@ const AddBotToRoster = ({ onClose }) => {
             <WithLoader loading={loading}>
                 <Table responsive='sm' hover>
                     <thead>
-                        <th>Name</th>
-                        <th>#</th>
-                        <th>Speed</th>
-                        <th>Strength</th>
-                        <th>Agility</th>
-                        <th>Attribute Sum</th>
+                        <tr>
+                            <th>Name</th>
+                            <th>#</th>
+                            <th>Speed</th>
+                            <th>Strength</th>
+                            <th>Agility</th>
+                            <th>Attribute Sum</th>
+                        </tr>
                     </thead>
                     <tbody>
                             {bots && availableBots().map(bot => <Bot bot={bot} addPlayer={addPlayer} />)}
