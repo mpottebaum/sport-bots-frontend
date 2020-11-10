@@ -11,6 +11,8 @@ const TeamContextProvider = ({ children }) => {
   const { fetchData, loading, setLoading } = useFetch(true)
   const token = localStorage.getItem('token');
 
+  const [rosterChangesMade, setRosterChangesMade] = useState(false)
+
   useEffect(() => {
     setLoading(true)
     getTeam();
@@ -39,16 +41,6 @@ const TeamContextProvider = ({ children }) => {
     localStorage.removeItem('token')
   }
 
-  const toggleRosterSave = () => setTeam({
-    ...team,
-    saved_roster: !team.saved_roster
-  })
-
-  const setRosterChangesMade = rosterChangesMade => setTeam({
-    ...team,
-    rosterChangesMade,
-  })
-
   if (loading) return <LoadingPage />
 
   return (
@@ -58,7 +50,7 @@ const TeamContextProvider = ({ children }) => {
         setTeam,
         setTeamFromResp,
         removeTeam,
-        toggleRosterSave,
+        rosterChangesMade,
         setRosterChangesMade,
       }}
     >

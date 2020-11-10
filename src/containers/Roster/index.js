@@ -14,7 +14,7 @@ import Layout from '../../components/Layout'
 import WithLoader from '../../components/WithLoader'
 
 const Roster = () => {
-    const { team, toggleRosterSave, setRosterChangesMade } = useContext(TeamContext)
+    const { team, setTeamFromResp, setRosterChangesMade, rosterChangesMade } = useContext(TeamContext)
     const { loading, fetchData } = useFetch()
     const { loading: rosterLoading, fetchData: fetchRoster } = useFetch()
     // const history = useHistory()
@@ -65,19 +65,24 @@ const Roster = () => {
             body
         })
         if(resp.roster) {
-            if(!team.saved_roster) toggleRosterSave()
             setRosterChangesMade(false)
         }
+        if(resp.team) {
+            setTeamFromResp(resp)
+        }
     }
+
 
     const deleteRoster = async () => {
         const resp = await fetchData({
             url: rosterAPI(team.id),
             method: 'DELETE',
         })
-        if(resp.message) {
+
+        if(resp.team) {
             dispatch(clearRoster())
-            toggleRosterSave()
+            setTeamFromResp(resp)
+            setRosterChangesMade(false)
         }
     }
 
@@ -98,12 +103,15 @@ const Roster = () => {
 
     const rosterIsGenerated = () => roster.starters && roster.alternates
 
+    const disableSave = () => team.saved_roster && !rosterChangesMade
+
+    console.log(team)
     return (
         <Layout>
             <div>
                 <Button onClick={generateRoster} loading={loading}>CREATE RANDOM ROSTER</Button>
                 {(roster && rosterIsGenerated()) && (
-                    <Button onClick={saveRoster} disabled={team.saved_roster && !team.rosterChangesMade} loading={loading}>
+                    <Button onClick={saveRoster} disabled={disableSave()} loading={loading}>
                         {team.saved_roster ? 'SAVE ROSTER CHANGES' : 'SAVE ROSTER'}
                     </Button>
                 )}
