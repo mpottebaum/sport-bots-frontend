@@ -1,14 +1,23 @@
 import React from 'react'
+import styled from 'styled-components'
 
 import Modal from '../cmps/Modal'
+import Button from '../../../components/Button'
+
+const Container = styled.ul`
+    li {
+        display: block;
+    }
+`
 
 const Errors = ({ errors, onClose }) => (
     <Modal onClose={onClose} title={'ERRORS'}>
-        <ul>
+        <Container>
             {errors && (
                 errors.map(error => <li>{error}</li>)
             )}
-        </ul>
+        </Container>
+        <Button onClick={onClose}>OK</Button>
     </Modal>
 )
 

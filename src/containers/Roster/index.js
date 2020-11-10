@@ -105,26 +105,39 @@ const Roster = () => {
 
     const disableSave = () => team.saved_roster && !rosterChangesMade
 
-    console.log(team)
     return (
         <Layout>
             <div>
-                <Button onClick={generateRoster} loading={loading}>CREATE RANDOM ROSTER</Button>
-                {(roster && rosterIsGenerated()) && (
-                    <Button onClick={saveRoster} disabled={disableSave()} loading={loading}>
-                        {team.saved_roster ? 'SAVE ROSTER CHANGES' : 'SAVE ROSTER'}
-                    </Button>
-                )}
-                {team.saved_roster && (
-                    <Button onClick={deleteRoster} loading={loading}>DELETE ROSTER</Button>
+                {playerToSwapHook[0] ? (
+                    <Button onClick={() => playerToSwapHook[1](null)} secondary>CANCEL</Button>
+                ): (
+                    <>
+                        <Button onClick={generateRoster} loading={loading}>CREATE RANDOM ROSTER</Button>
+                        {(roster && rosterIsGenerated()) && (
+                            <Button onClick={saveRoster} disabled={disableSave()} loading={loading}>
+                                {team.saved_roster ? 'SAVE ROSTER CHANGES' : 'SAVE ROSTER'}
+                            </Button>
+                        )}
+                        {team.saved_roster && (
+                            <Button onClick={deleteRoster} loading={loading}>DELETE ROSTER</Button>
+                        )}
+                    </>
                 )}
             </div>
             {(roster && rosterIsGenerated()) && (
                 <WithLoader loading={rosterLoading}>
-                    <h1>Starters</h1>
-                    <PlayersList players={roster.starters} swapper={swapper} starter />
-                    <h1>Alternates</h1>
-                    <PlayersList players={roster.alternates} swapper={swapper} />
+                    {!(playerToSwapHook[0] && playerToSwapHook[0].starter) && (
+                        <>
+                            <h1>Starters</h1>
+                            <PlayersList players={roster.starters} swapper={swapper} starter />
+                        </>
+                    )}
+                    {!(playerToSwapHook[0] && playerToSwapHook[0].alternate) && (
+                        <>
+                            <h1>Alternates</h1>
+                            <PlayersList players={roster.alternates} swapper={swapper} />
+                        </>
+                    )}
                 </WithLoader>
             )}
         </Layout>

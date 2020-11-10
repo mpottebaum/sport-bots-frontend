@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import TextInput from '../../../components/TextInput'
 import Button from '../../../components/Button'
+import ButtonContainer from './ButtonContainer'
 
 const TeamItem = ({
     label,
@@ -29,14 +30,19 @@ const TeamItem = ({
                     value={inputValue}
                     marginTop={spaced ? 15 : 0}
                 />
-                <Button type={'submit'} marginTop={15} loading={loading}>
-                    UPDATE {label.toUpperCase()}
-                </Button>
+                <ButtonContainer>
+                    <Button type={'submit'} marginTop={15} loading={loading}>
+                        UPDATE {label.toUpperCase()}
+                    </Button>
+                    <Button onClick={() => setIsEditing(false)} type={'button'} marginTop={15} secondary>
+                        CANCEL
+                    </Button>
+                </ButtonContainer>
             </form>
         ) : (
             <>
                 <h3>{label}: {teamValue}</h3>
-                <Button onClick={() => setIsEditing(true)} secondary> EDIT</Button>
+                <Button onClick={() => setIsEditing(true)}>EDIT</Button>
             </>
         )
     )

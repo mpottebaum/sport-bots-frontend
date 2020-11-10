@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import Button from '../../../components/Button'
 import PasswordInput from '../../../components/PasswordInput'
+import ButtonContainer from './ButtonContainer'
 
 const ChangeContainer = styled.form`
     max-width: 400px;
@@ -30,12 +31,17 @@ const ChangePassword = ({
                     name={'password'}
                     marginTop={20}
                 />
-                <Button type={'submit'} loading={loading}>
-                    CONFIRM
-                </Button>
+                <ButtonContainer>
+                    <Button type={'submit'} loading={loading} marginTop={15}>
+                        CONFIRM
+                    </Button>
+                    <Button onClick={() => setChangePassword(false)} secondary marginTop={15}>
+                        CANCEL
+                    </Button>
+                </ButtonContainer>
             </ChangeContainer>
         ) : (
-            <Button onClick={() => setChangePassword(true)} marginTop={20}>
+            <Button onClick={() => setChangePassword(true)} marginTop={20} secondary>
                 CHANGE PASSWORD
             </Button>
         )
