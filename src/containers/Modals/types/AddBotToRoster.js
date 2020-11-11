@@ -40,18 +40,24 @@ const AddBotToRoster = ({ onClose }) => {
     }
 
     const addPlayer = addPlayer => {
+        // get player-to-add's attributes and sum them
         const { speed, agility, strength } = addPlayer
         const attributeSum = speed + agility + strength
+        // compile all players on roster in one array
         const allPlayersOnRoster = [ ...roster.starters, ...roster.alternates ]
+        // filter out player who is being removed from roster
         const remainingRoster = allPlayersOnRoster.filter(player => player.id !== removePlayer.id)
+        // verify player-to-add does not have same attribute sum as any other player already on roster
         const isAddPlayerValid = remainingRoster.every(player => (
             player.speed + player.agility + player.strength !== attributeSum
         ))
+        // if player addition is invalid, open error modal and stop process
         if(!isAddPlayerValid) {
             dispatch(setErrors(['No two players on your roster can have the same attribute sum']))
             dispatch(openModal(modalTypes.Errors))
             return
         }
+        // determine which designation to add player as and disptach action
         const addPlayerToRoster = removePlayer.starter ? addStarter : addAlternate
         dispatch(addPlayerToRoster({
             addPlayer,
@@ -62,6 +68,7 @@ const AddBotToRoster = ({ onClose }) => {
     }
 
     const availableBots = () => {
+        // compile players on roster and create library of their IDs
         const rosterPlayers = [
             ...roster.starters,
             ...roster.alternates,
@@ -73,6 +80,7 @@ const AddBotToRoster = ({ onClose }) => {
             }
         }, {})
 
+        // filter out any bots already on roster
         return bots.filter(bot => !rosterLib[bot.id])
     }
 

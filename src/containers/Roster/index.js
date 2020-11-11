@@ -14,6 +14,8 @@ import Layout from '../../components/Layout'
 import WithLoader from '../../components/WithLoader'
 
 const Roster = () => {
+    // rosterChangesMade is used to disable/enable the SAVE ROSTER CHANGES button
+    // without mutating the team object
     const { team, setTeamFromResp, setRosterChangesMade, rosterChangesMade } = useContext(TeamContext)
     const { loading, fetchData } = useFetch()
     const { loading: rosterLoading, fetchData: fetchRoster } = useFetch()
@@ -43,6 +45,7 @@ const Roster = () => {
     }
 
     const saveRoster = async () => {
+        // compile starters and alternates into one list with designation values
         const starters = roster.starters.map(starter => ({
             bot_id: starter.id,
             designation: 'starter'
@@ -67,6 +70,7 @@ const Roster = () => {
         if(resp.roster) {
             setRosterChangesMade(false)
         }
+        // updating team to update saved_roster value
         if(resp.team) {
             setTeamFromResp(resp)
         }
@@ -81,6 +85,7 @@ const Roster = () => {
 
         if(resp.team) {
             dispatch(clearRoster())
+            // update team and rosterChangesMade (both found in TeamContext)
             setTeamFromResp(resp)
             setRosterChangesMade(false)
         }

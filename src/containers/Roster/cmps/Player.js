@@ -15,10 +15,14 @@ const Player = ({ player, swapper, starter=false }) => {
     const dispatch = useDispatch()
 
     const onSwapClick = () => {
+        // if playerToSwap is falsey
+        // then swap process is beginning
         if(!playerToSwap) {
             setPlayerToSwap(addSwapPlayer())
             return
         }
+        // if playerToSwap is truthy
+        // then complete swap process
         swapPlayers(addSwapPlayer())
     }
 
@@ -33,6 +37,8 @@ const Player = ({ player, swapper, starter=false }) => {
     const swapButtonText = () => playerToSwap ? 'SWITCH' : `SET AS ${starter ? 'ALTERNATE' : 'STARTER'}`
 
     const onRemoveClick = () => {
+        // start REPLACE player process by setting removePlayer in store
+        // and opening addBotToRoster modal
         dispatch(setRemovePlayer({
             ...player,
             starter,
